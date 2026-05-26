@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORTFOLIO — 이희찬</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 14px 60px;
+      background: rgba(0,0,0,0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-user {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--green-dim);
+    }
+
+    .nav-user strong {
+      color: var(--green);
+      text-shadow: 0 0 8px var(--green-glow);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 70px 60px 0;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--green-dim);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-size: clamp(64px, 11vw, 140px);
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      line-height: 0.9;
+      text-shadow: 0 0 24px var(--green-glow), 0 0 80px rgba(0,204,0,0.15);
+      position: relative;
+      display: inline-block;
+    }
+
+    /* persistent glitch layer */
+    .hero-title::before {
+      content: 'PORTFOLIO';
+      position: absolute;
+      inset: 0;
+      color: var(--green);
+      animation: glitch 6s 2s infinite;
+      opacity: 0.25;
+    }
+
+    .hero-intro {
+      margin-top: 32px;
+      font-family: var(--font-kr);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 2.1;
+      color: #009900;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-divider {
+      margin-top: 50px;
+    }
+
+    /* ── BOARD ── */
+    .board-wrap {
+      padding: 50px 60px 100px;
+      animation: fadeUp 0.7s 0.15s ease both;
+    }
+
+    .board-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .board-label {
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--green-dim);
+      text-transform: uppercase;
+    }
+
+    .board-label::before { content: '> '; color: var(--green-dark); }
+
+    /* ── TABLE ── */
+    .tbl { width: 100%; border-collapse: collapse; }
+
+    .tbl th {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--green-dark);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      font-weight: normal;
+    }
+
+    .tbl td {
+      padding: 15px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(0,204,0,0.07);
+      vertical-align: middle;
+      transition: background 0.12s;
+    }
+
+    .tbl tr:hover td { background: rgba(0,204,0,0.04); }
+
+    .col-no   { width: 56px; color: var(--green-dark); font-size: 12px; }
+    .col-title {
+      cursor: pointer;
+      color: var(--green);
+      transition: text-shadow 0.15s;
+    }
+    .col-title:hover {
+      text-shadow: 0 0 10px var(--green-glow);
+      text-decoration: underline;
+    }
+    .col-author { width: 120px; color: #009900; font-size: 12px; }
+    .col-date   { width: 140px; color: var(--green-dark); font-size: 11px; letter-spacing: 0.05em; }
+    .col-act    { width: 130px; text-align: right; }
+
+    .badge-mine {
+      font-size: 9px;
+      background: var(--green);
+      color: #000;
+      padding: 2px 5px;
+      margin-left: 7px;
+      vertical-align: middle;
+      letter-spacing: 0.05em;
+    }
+
+    .empty-row td {
+      text-align: center;
+      color: var(--green-dark);
+      padding: 60px 0;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+    }
+
+    /* ── MODALS ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: var(--panel);
+      border: 1px solid var(--green);
+      box-shadow: 0 0 60px rgba(0,204,0,0.12), inset 0 0 40px rgba(0,204,0,0.04);
+      width: 100%;
+      max-width: 620px;
+      padding: 38px;
+      animation: fadeUp 0.22s ease;
+    }
+
+    .modal-hd {
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      color: var(--green-dim);
+      text-transform: uppercase;
+      margin-bottom: 26px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-hd::before { content: '// '; color: var(--green-dark); }
+
+    .modal-ft {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+
+    /* detail */
+    .detail-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 11px;
+      color: var(--green-dark);
+      margin-bottom: 18px;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-body {
+      background: #000;
+      border: 1px solid rgba(0,204,0,0.15);
+      padding: 20px;
+      min-height: 110px;
+      font-size: 14px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: 22px;
+      color: var(--green);
+    }
+
+    /* confirm */
+    .confirm-msg {
+      font-size: 14px;
+      color: #009900;
+      line-height: 1.9;
+      text-align: center;
+      margin-bottom: 28px;
+      font-family: var(--font-kr);
+    }
+
+    .confirm-msg em {
+      color: var(--red);
+      font-style: normal;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--green);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      padding: 12px 28px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 9000;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav" id="topnav">
+    <!-- filled by JS -->
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-label">// 20408 · 이희찬</div>
+    <div class="hero-title">PORTFOLIO</div>
+    <div class="hero-intro">
+      안녕하세요 20408번 이희찬 입니다<br>
+      저는 프로그래머가 될 것입니다
+    </div>
+    <div class="divider hero-divider"></div>
+  </section>
+
+  <!-- BOARD -->
+  <section class="board-wrap">
+    <div class="board-head">
+      <div class="board-label">게시판</div>
+      <button class="btn btn-sm" id="btn-write" onclick="openWrite()" style="display:none">
+        + 새 글 작성
+      </button>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>작성일</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="board-body"></tbody>
+    </table>
+  </section>
+
+  <!-- ── WRITE/EDIT MODAL ── -->
+  <div class="overlay" id="ov-write">
+    <div class="modal">
+      <div class="modal-hd" id="write-hd">새 글 작성</div>
+      <label>제목</label>
+      <input type="text" id="w-title" placeholder="제목을 입력하세요" maxlength="100" />
+      <label>내용</label>
+      <textarea id="w-content" placeholder="내용을 입력하세요"></textarea>
+      <div class="modal-ft">
+        <button class="btn btn-sm btn-ghost" onclick="closeOv('ov-write')">취소</button>
+        <button class="btn btn-sm" id="w-submit" onclick="submitPost()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DETAIL MODAL ── -->
+  <div class="overlay" id="ov-detail">
+    <div class="modal">
+      <div class="modal-hd" id="d-title">제목</div>
+      <div class="detail-meta">
+        <span id="d-author"></span>
+        <span id="d-date"></span>
+      </div>
+      <div class="detail-body" id="d-body"></div>
+      <div class="modal-ft" id="d-ft"></div>
+    </div>
+  </div>
+
+  <!-- ── DELETE CONFIRM MODAL ── -->
+  <div class="overlay" id="ov-confirm">
+    <div class="modal" style="max-width:380px; text-align:center;">
+      <div class="modal-hd">삭제 확인</div>
+      <div class="confirm-msg">
+        게시글을 삭제하시겠습니까?<br>
+        <em>이 작업은 되돌릴 수 없습니다.</em>
+      </div>
+      <div class="modal-ft" style="justify-content:center;">
+        <button class="btn btn-sm btn-ghost" onclick="closeOv('ov-confirm')">취소</button>
+        <button class="btn btn-sm btn-danger" onclick="confirmDelete()">삭제</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="auth.js"></script>
+  <script>
+    // ── 상태 ──
+    let editingId  = null;
+    let viewingId  = null;
+    let deletingId = null;
+
+    const user = Auth.currentUser();
+
+    // ── NAV 렌더 ──
+    function renderNav() {
+      const nav = document.getElementById('topnav');
+      if (user) {
+        nav.innerHTML = `
+          <span class="nav-user">
+            접속 중: <strong>${Board.escHtml(user.nickname)}</strong>
+            <span style="color:var(--green-dark)"> [${Board.escHtml(user.id)}]</span>
+          </span>
+          <button class="btn btn-sm btn-ghost" onclick="doLogout()">로그아웃</button>
+        `;
+        document.getElementById('btn-write').style.display = '';
+      } else {
+        nav.innerHTML = `
+          <a class="btn btn-sm" href="login.html">로그인</a>
+          <a class="btn btn-sm btn-ghost" href="register.html">회원가입</a>
+        `;
+        document.getElementById('btn-write').style.display = 'none';
+      }
+    }
+
+    function doLogout() {
+      Auth.logout();
+      location.reload();
+    }
+
+    // ── 게시판 렌더 ──
+    function renderBoard() {
+      const tbody = document.getElementById('board-body');
+      const posts = Board.getPosts();
+
+      if (posts.length === 0) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">// 아직 게시글이 없습니다. 첫 글을 작성해보세요.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = [...posts].reverse().map(p => {
+        const mine   = user && user.id === p.authorId;
+        const badge  = mine ? `<span class="badge-mine">MY</span>` : '';
+        const actHtml = mine
+          ? `<button class="btn btn-sm" onclick="openEdit(${p.id})" style="margin-right:6px">수정</button>
+             <button class="btn btn-sm btn-danger" onclick="openConfirm(${p.id})">삭제</button>`
+          : '';
+        return `
+          <tr>
+            <td class="col-no">${String(p.id).padStart(3,'0')}</td>
+            <td class="col-title" onclick="openDetail(${p.id})">${Board.escHtml(p.title)}${badge}</td>
+            <td class="col-author">${Board.escHtml(p.authorNick)}</td>
+            <td class="col-date">${Board.formatDate(p.date)}</td>
+            <td class="col-act">${actHtml}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    // ── 오버레이 열기/닫기 ──
+    function openOv(id)  { document.getElementById(id).classList.add('open'); }
+    function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+
+    document.querySelectorAll('.overlay').forEach(el => {
+      el.addEventListener('click', e => {
+        if (e.target === el) closeOv(el.id);
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape')
+        ['ov-write','ov-detail','ov-confirm'].forEach(closeOv);
+    });
+
+    // ── 글 작성 ──
+    function openWrite() {
+      if (!user) { location.href = 'login.html'; return; }
+      editingId = null;
+      document.getElementById('write-hd').textContent = '새 글 작성';
+      document.getElementById('w-submit').textContent = '저장';
+      document.getElementById('w-title').value   = '';
+      document.getElementById('w-content').value = '';
+      openOv('ov-write');
+      setTimeout(() => document.getElementById('w-title').focus(), 80);
+    }
+
+    function submitPost() {
+      const title   = document.getElementById('w-title').value.trim();
+      const content = document.getElementById('w-content').value.trim();
+      if (!title)   { showToast('제목을 입력하세요.', true); return; }
+      if (!content) { showToast('내용을 입력하세요.', true); return; }
+
+      if (editingId !== null) {
+        Board.update(editingId, title, content);
+        showToast('게시글이 수정되었습니다.');
+      } else {
+        Board.add(title, content);
+        showToast('게시글이 등록되었습니다.');
+      }
+
+      renderBoard();
+      closeOv('ov-write');
+    }
+
+    // ── 상세 보기 ──
+    function openDetail(id) {
+      const p = Board.getById(id);
+      if (!p) return;
+      viewingId = id;
+
+      document.getElementById('d-title').textContent  = p.title;
+      document.getElementById('d-author').textContent = '작성자: ' + p.authorNick;
+      document.getElementById('d-date').textContent   = '작성일: ' + Board.formatDate(p.date);
+      document.getElementById('d-body').textContent   = p.content;
+
+      const mine = user && user.id === p.authorId;
+      document.getElementById('d-ft').innerHTML = `
+        <button class="btn btn-sm btn-ghost" onclick="closeOv('ov-detail')">닫기</button>
+        ${mine ? `
+          <button class="btn btn-sm" onclick="closeOv('ov-detail'); openEdit(${p.id})">수정</button>
+          <button class="btn btn-sm btn-danger" onclick="closeOv('ov-detail'); openConfirm(${p.id})">삭제</button>
+        ` : ''}
+      `;
+      openOv('ov-detail');
+    }
+
+    // ── 수정 ──
+    function openEdit(id) {
+      const p = Board.getById(id);
+      if (!p || !user || user.id !== p.authorId) return;
+      editingId = id;
+      document.getElementById('write-hd').textContent  = '글 수정';
+      document.getElementById('w-submit').textContent  = '수정 완료';
+      document.getElementById('w-title').value   = p.title;
+      document.getElementById('w-content').value = p.content;
+      openOv('ov-write');
+    }
+
+    // ── 삭제 ──
+    function openConfirm(id) {
+      deletingId = id;
+      openOv('ov-confirm');
+    }
+
+    function confirmDelete() {
+      Board.remove(deletingId);
+      deletingId = null;
+      renderBoard();
+      closeOv('ov-confirm');
+      showToast('게시글이 삭제되었습니다.');
+    }
+
+    // ── 토스트 ──
+    let toastTimer;
+    function showToast(msg, isErr = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = isErr ? 'var(--red)' : 'var(--green)';
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    // ── INIT ──
+    renderNav();
+    renderBoard();
+  </script>
+</body>
+</html>
